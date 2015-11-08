@@ -7,6 +7,11 @@
     {{ $cat->name }}
   </h2>
 
+  <a href="{{ url('cats/'.$cat->id.'/edit') }}">
+    <span class="glyphicon glyphicon-edit "></span>
+    Edit
+  </a>
+
   <a href="{{ url('cats/'.$cat->id.'/delete') }}">
     <span class="glyphicon glyphicon-trash"></span>
     Delete
