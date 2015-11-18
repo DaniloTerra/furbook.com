@@ -16,24 +16,25 @@ class User extends Model implements AuthenticatableContract,
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
+    //protected $table = 'users';
+    //protected $fillable = ['name', 'email', 'password'];
+    //protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $casts = ['is_admin' => 'boolean'];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'remember_token'];
+    public function cats() {
+      return $this->hasMany('Furbook\Cat');
+    }
+
+    public function owns(Cat $cat) {
+      return $this->id == $cat->user_id;
+    }
+
+    public function canEdit(Cat $cat) {
+      return $this->is_admin || $this->owns($cat);
+    }
+
+    public function isAdministrator() {
+      return $this->getAttribute('is_admin');
+    }
 }
